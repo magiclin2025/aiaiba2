@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowRight, BadgeCheck, Bot, Box, Check, ChevronDown, ChevronRight,
+  ArrowRight, BadgeCheck, Bot, Check, ChevronRight,
   CircleHelp, Clock3, Code2, Copy, CreditCard, Headphones, Info, Menu,
-  MessageCircle, Moon, Orbit, ShieldCheck, Sparkles, Star, Sun, X, Zap,
+  MessageCircle, Moon, ShieldCheck, Sparkles, Sun, X, Zap,
 } from "lucide-react";
 
 const navItems = [
@@ -17,13 +17,13 @@ const navItems = [
 const checkoutUrl = "https://fe.dtyuedan.cn/shop/CZTTFS3B";
 
 const plans = [
-  { vendor: "OPENAI", name: "ChatGPT", variants: "Plus · 5× Pro · 20× Pro", price: "178", icon: Sparkles, accent: "#1769ff",
+  { vendor: "OPENAI", name: "ChatGPT", variants: "Plus · 5× Pro · 20× Pro", price: "178", logo: "/logos/openai.svg", accent: "#1769ff", recommended: true,
     features: ["GPT-5.6 Sol：Plus 支持 Medium / High", "Pro 另含 Extra High 与 Sol Pro", "GPT-5.5 Instant 默认 · Codex"] },
-  { vendor: "GOOGLE", name: "Gemini", variants: "1 月 · 3 月 · 1 年", price: "188", icon: Star, accent: "#7c5cff", recommended: true,
+  { vendor: "GOOGLE", name: "Gemini", variants: "1 月 · 3 月 · 1 年", price: "188", logo: "/logos/gemini.svg", accent: "#7c5cff",
     features: ["Gemini 3.1 Pro + 1M 上下文", "Nano Banana Pro 图像", "Gemini Notebook + 5TB"] },
-  { vendor: "XAI", name: "Grok", variants: "月度 · 年度", price: "208", icon: Orbit, accent: "#17233e",
+  { vendor: "XAI", name: "Grok", variants: "月度 · 年度", price: "208", logo: "/logos/grok.png", accent: "#17233e",
     features: ["Grok 4.5 + Search", "Imagine 图像与视频生成", "Voice 语音交互"] },
-  { vendor: "ANTHROPIC", name: "Claude", variants: "Pro · Max 5× · Max 20×", price: "178", icon: Zap, accent: "#7658ff",
+  { vendor: "ANTHROPIC", name: "Claude", variants: "Pro · Max 5× · Max 20×", price: "178", logo: "/logos/claude.svg", accent: "#7658ff",
     features: ["Sonnet 5 + 更多可用模型", "Claude Code 编程助手", "Projects + Research"] },
 ];
 
@@ -41,12 +41,6 @@ const steps = [
   { number: "03", icon: Clock3, title: "完成订单与交付", text: "卡密订单自动交付，人工服务按照订单页面说明处理。" },
 ];
 
-const faqs = [
-  { q: "如何选择适合我的 AI 服务？", a: "ChatGPT 适合综合使用与编程，Claude 擅长长文本和代码，Gemini 适合 Google 生态，Grok 强调实时信息与多媒体。下单前也可以联系 Profriends 协助确认。" },
-  { q: "卡密和人工服务有什么区别？", a: "卡密商品通常由系统自动发送激活信息；人工服务需要按照商品页要求提交必要资料，交付时间以订单状态为准。" },
-  { q: "支持哪些支付方式？", a: "第三方收银台支持支付宝和微信支付，具体可用方式以结算页面实时展示为准。" },
-];
-
 function BrandMark({ size = 34 }: { size?: number }) {
   return <span className="brand-mark" style={{ width: size, height: size }} aria-hidden="true"><Sparkles size={size * .72} strokeWidth={1.8} /></span>;
 }
@@ -55,7 +49,6 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   useEffect(() => { document.documentElement.dataset.theme = dark ? "dark" : "light"; }, [dark]);
   useEffect(() => {
@@ -108,7 +101,7 @@ function App() {
           <span className="orbit-node node-one" /><span className="orbit-node node-two" /><span className="orbit-node node-three" />
           <motion.div className="hero-copy" initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .75, ease: [.22, 1, .36, 1] }}>
             <div className="eyebrow">AIAIBA.org · 独立第三方 AI 会员服务</div>
-            <h1>全球顶级 <em>AI 服务</em><span>一站式轻松开通</span></h1>
+            <h1><span>全球顶级 AI 服务</span><em>一站式轻松开通</em></h1>
             <h2>ChatGPT · Claude · Gemini · Grok 会员开通</h2>
             <p>卡密自助与人工服务清晰区分 · 支持支付宝 / 微信 · 下单前展示账号要求</p>
           </motion.div>
@@ -118,8 +111,8 @@ function App() {
             <Zap className="core-zap" size={30} fill="currentColor" />
           </motion.div>
           <div className="hero-actions">
-            <a className="action-card" href={checkoutUrl} target="_blank" rel="noopener noreferrer"><span className="action-icon"><Box size={24} /></span><span><strong>立即购买</strong><small>进入第三方收银台完成订单</small></span><ChevronRight size={22} /></a>
-            <a className="action-card" href={checkoutUrl} target="_blank" rel="noopener noreferrer"><span className="action-icon"><Info size={24} /></span><span><strong>了解服务</strong><small>查看开通流程与服务条件</small></span><ChevronRight size={22} /></a>
+            <a className="hero-button hero-button-primary" href={checkoutUrl} target="_blank" rel="noopener noreferrer">立即购买 <ArrowRight size={17} /></a>
+            <a className="hero-button hero-button-secondary" href={checkoutUrl} target="_blank" rel="noopener noreferrer">了解服务</a>
           </div>
           <div className="benefit-strip">{benefits.map(({ icon: Icon, label }) => <div key={label}><Icon size={21} /><span>{label}</span></div>)}</div>
           <div className="hero-note">
@@ -133,13 +126,12 @@ function App() {
           <div className="section-heading"><span>会员方案</span><h2>选择适合你的 AI</h2><p>4 大主流 AI 服务，每个类目提供多种规格方案。点击查看详情与全部价格。</p></div>
           <div className="plan-grid">
             {plans.map((plan, index) => {
-              const Icon = plan.icon;
               return (
                 <motion.article className={`plan-card ${plan.recommended ? "recommended" : ""}`} key={plan.name}
                   initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }}
                   transition={{ delay: index * .08, duration: .55 }} style={{ "--plan-accent": plan.accent } as React.CSSProperties}>
                   {plan.recommended && <span className="recommended-badge">推荐</span>}
-                  <div className="plan-icon"><Icon size={26} /></div><span className="plan-vendor">{plan.vendor}</span><h3>{plan.name}</h3>
+                  <div className={`plan-icon plan-icon-${plan.name.toLowerCase()}`}><img src={plan.logo} alt={`${plan.name} 官方标志`} /></div><span className="plan-vendor">{plan.vendor}</span><h3>{plan.name}</h3>
                   <p className="plan-variants">{plan.variants}</p><div className="plan-price"><sup>¥</sup><strong>{plan.price}</strong><span>起</span></div>
                   <ul>{plan.features.map(feature => <li key={feature}><Check size={16} />{feature}</li>)}</ul>
                   <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">查看 {plan.name} 套餐 <ArrowRight size={16} /></a>
@@ -169,17 +161,6 @@ function App() {
             <ul><li><Check size={18} />卡密商品与人工服务明确区分</li><li><Check size={18} />下单前展示账号及密码要求</li><li><Check size={18} />不确定时可先联系 Profriends 核验</li></ul>
             <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">查看会员方案 <ArrowRight size={17} /></a>
           </div>
-        </section>
-
-        <section className="faq-section">
-          <div className="faq-intro"><span className="section-label">常见问题</span><h2>下单之前，先把问题说清楚</h2><p>如果这里没有你需要的答案，可直接联系 Profriends。</p></div>
-          <div className="faq-list">{faqs.map((item, index) => {
-            const isOpen = openFaq === index;
-            return <article key={item.q} className={isOpen ? "open" : ""}>
-              <button type="button" onClick={() => setOpenFaq(isOpen ? null : index)} aria-expanded={isOpen}><span>{item.q}</span><ChevronDown size={21} /></button>
-              <AnimatePresence initial={false}>{isOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="faq-answer"><p>{item.a}</p></motion.div>}</AnimatePresence>
-            </article>;
-          })}</div>
         </section>
 
         <section className="contact-banner section-orbits" id="contact">
